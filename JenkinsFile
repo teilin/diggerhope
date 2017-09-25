@@ -11,6 +11,20 @@ pipeline {
                 }
             }
         }
+        stage('Publish') {
+            steps {
+                dir ('src/DiggerHope') {
+                    sh 'dotnet publish -c Release -o ./deploy'
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                dir ('src/DiggerHope') {
+                    sh 'scp -r deploy root@test1.devgeek.io:/var/www/diggerhope/'
+                }
+            }
+        }
     }
     post {
         always {
